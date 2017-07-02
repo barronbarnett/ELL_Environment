@@ -1,0 +1,3 @@
+[submodule "root/ELL"]
+	path = root/ELL
+	url = git@github.com:Microsoft/ELL.git
