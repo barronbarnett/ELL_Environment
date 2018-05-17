@@ -13,12 +13,7 @@ VOLUME /root
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && apt-get -y update \
 &&  apt-get install -y apt-utils software-properties-common \
-&&  apt-get -y upgrade \
 && apt-get install -y gcc cmake wget git gcc g++ \
-&& wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-&&  apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" \
-&&  apt-get -y update \
-&&  apt-get install -y llvm-3.9-dev \
 &&  apt-get install -y libedit-dev zlibc zlib1g zlib1g-dev libopenblas-dev doxygen 
 
 RUN  apt-get update \
@@ -28,3 +23,15 @@ RUN  apt-get update \
 && /root/Anaconda3-install.sh -b -p /opt/anaconda3 \
 && rm /root/Anaconda3-install.sh
 
+RUN wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
+&&  apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-3.9 main" \
+&&  apt-get -y update \
+&&  apt-get install -y llvm-3.9-dev
+
+RUN apt-get install curl \
+&& curl -O --location http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz \
+&& tar zxvf swig-3.0.12.tar.gz && cd swig-3.0.12 \
+&& ./configure --without-pcre && make && make install \
+&& cd ~/
+
+ENTRYPOINT [ "/root/build.sh" ]

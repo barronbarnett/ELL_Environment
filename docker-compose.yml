@@ -1,0 +1,8 @@
+version: '3'
+services:
+  ell:
+    build: .
+    volumes:
+      - ./root:/root
+    command: 
+      - /root/build.sh
